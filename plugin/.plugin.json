@@ -1,0 +1,29 @@
+{
+	"$schema": "https://orgsdk.ai/schemas/plugin-manifest.v1.json",
+	"name": "harvest",
+	"version": "0.1.1",
+	"description": "Read Harvest evidence for invoice readiness and unbilled-work review without changing provider records.",
+	"entry": "index.ts",
+	"auth": {
+		"type": "token",
+		"provider": "harvest",
+		"label": "Harvest connection",
+		"hint": "Attach a harvest credential with secret_apiKey containing a personal access token; configure accountId separately. The plugin enforces GET-only reads; the PAT itself retains full user permissions."
+	},
+	"marketplace": {
+		"displayName": "Harvest Readiness",
+		"category": "Finance",
+		"tagline": "Read Harvest source evidence for reviewed invoice drafts.",
+		"tags": ["readonly", "invoicing", "time-tracking"],
+		"useCases": [
+			"Compare project/time evidence with existing invoices",
+			"Prepare an invoice-readiness exception list",
+			"Build reviewed drafts in OrgSDK without writing to the provider"
+		],
+		"permissionsSummary": "Reads only one configured Harvest account using the attached token: current identity, projects, time entries and invoices. Token permissions depend on the user and are broader than this plugin. No writes, timer controls, email, payments or deletion.",
+		"links": {
+			"homepage": "https://orgsdk.ai",
+			"docs": "https://help.getharvest.com/api-v2/"
+		}
+	}
+}
