@@ -1,40 +1,17 @@
 # Harvest unbilled-work review for OrgSDK
 
-## Current npm distribution and execution checks
+Apache-2.0 external plugin. Reads one configured Harvest account so OrgSDK actions can compare time, projects and existing invoices and prepare a reviewed draft. It never changes time entries, controls timers, creates or edits invoices, sends messages, makes payments, or deletes records.
 
-Updated **31 October 2026**. This public-release candidate uses `@orgsdk/plugins@0.2.2`
-and `@orgsdk/executor@0.1.0` (with the tracked packaging compatibility patch).
-`bun run build:npm` creates a public Apache-2.0 npm payload; `bun run test:executor`
-downloads the extracted npm entry into an empty executor store and executes every exported function headlessly.
-`bun run test:registration` verifies fresh-project registration using the npm host.
-See [npm distribution, CI activation and verification](docs/npm-distribution.md)
-for prerequisites, commands, fixtures and release settings. Publication remains
-an explicit release operation; source-root `private: true` is retained.
+## Install in OrgSDK
 
-## Current installation and credential contract
+Open your project's Plugins page, select this plugin and enable the pinned release.
+The default catalogue is https://orgsdk.ai/plugins/releases.json. The executor
+downloads the versioned bundle and verifies its SHA256. Configure the provider
+and attach the credential described below before running an action.
 
-Configure the generated `dist/npm/plugin.catalog.json` as an OrgSDK release
-catalogue, then add its pinned external release to a project. Installing npm files
-alone does not register the plugin. Its package URL addresses the immutable npm
-version through jsDelivr; that URL becomes available only after publication.
-The catalogue retains the bundle's SHA256 digest. No release is published by
-building or testing locally.
-
-Native Google, Twitter, LinkedIn and Facebook OAuth connections are owned by the
-OrgSDK host. Plugins receive only `{source: "byo", secret_accessToken}` under
-their provider key. Client and refresh secrets stay on the host. The retired
-first-party relay is unsupported. Generic token providers receive their stored
-secret record. See [the current distribution guide](docs/npm-distribution.md).
-
-## Historical author-source and hosted-catalogue reference
-
-The material below preserves the original extraction and legacy authoring
-workflows. Its callback/relay, source-archive publication and private-licence
-claims describe the former host. The current npm, authentication and licensing
-contract above supersedes those claims.
-
-
-Private, proprietary external plugin. Reads one configured Harvest account so OrgSDK actions can compare time, projects and existing invoices and prepare a reviewed draft. It never changes time entries, controls timers, creates or edits invoices, sends messages, makes payments, or deletes records.
+The plugin is Apache-2.0 licensed; see LICENSE, NOTICE and TRADEMARKS.md.
+The generated npm distribution is a separate publication surface. Installing npm
+files alone does not register a project plugin. Local builds do not publish it.
 
 ## Setup
 
@@ -111,7 +88,7 @@ bun --no-env-file /absolute/path/to/orgsdk-platform/runtime/src/cli.ts package-p
   --directory "$PWD" --output "$PWD/release" --license "$PWD/LICENSE"
 ```
 
-`release/` is self-contained for the active external plugin loader and is distinct from `dist/`. Both are Git-ignored. Package twice and compare hashes before distribution. No remote, publishing workflow or deployment is configured.
+`release/` is self-contained for the active external plugin loader and is distinct from `dist/`. Both are Git-ignored. Package twice and compare hashes before distribution. The repository carries a gated npm publication workflow. Publication and catalogue deployment are separate from local builds.
 
 Tests use synthetic representative response fixtures and mocked HTTP transport. No customer token or live Harvest account was used. Local checks do not establish a customer's role permissions or production availability.
 
@@ -124,3 +101,7 @@ Verified 30 October 2026:
 - [Projects](https://help.getharvest.com/api-v2/projects-api/projects/projects/).
 - [Time entries, filters and invoice references](https://help.getharvest.com/api-v2/timesheets-api/timesheets/time-entries/).
 - [Invoices, required permissions and project-linked line items](https://help.getharvest.com/api-v2/invoices-api/invoices/invoices/).
+
+## Development
+
+Use Bun 1.4 and Node.js 22.22.0 or newer. See [npm distribution and verification](docs/npm-distribution.md). Run source checks, `package`, `build:npm`, `test:executor` and `test:registration` before release. Provider tests use synthetic data; no live account permissions are implied.
